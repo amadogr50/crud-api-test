@@ -1,0 +1,102 @@
+html
+    head
+        meta(charset='utf-8')
+
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css', integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh', crossorigin='anonymous')
+        link(rel='stylesheet', href='styles.css')
+        script(src='https://code.iconify.design/1/1.0.4/iconify.min.js')
+    body
+        main
+            div.form
+                .card
+                    .card-body
+                        h5.card-title Create new user
+                        form(action='/api/users', method='POST')
+                            .form-group
+                                label(for='nickInput') Nick *
+                                input#nickInput.form-control(name='nick', type='text', aria-describedby='nickHelp', placeholder='Enter nick', required, pattern='^((?!\\d)\\w)((?!_)\\w)*$')
+                                small#nickHelp.form-text.text-muted
+                                    ul
+                                        li Start with a letter or underscore
+                            .form-group
+                                label(for='nameInput') Name *
+                                input#nameInput.form-control(name='name', type='text', placeholder='Enter name', required)
+                            .form-group
+                                label(for='lastNameInput') Last name
+                                input#lastNameInput.form-control(name='lastName', type='text', placeholder='Enter last name')
+                            .form-group
+                                label(for='roleSelect') Role *
+                                select#roleSelect.form-control(name='role', required)
+                                    option Admin
+                                    option Operador
+                                    option Administrativo
+                            .form-group
+                                label(for='emailInput') Email address *
+                                input#emailInput.form-control(name='email', type='email', aria-describedby='emailHelp', placeholder='Enter email', required)
+                            .form-group
+                                label(for='passwordInput') Password *
+                                input#passwordInput.form-control(name='password', type='password', placeholder='Password', required)
+                            button.btn.btn-primary(type='submit') Submit
+            div.content
+                each user in users.length ? users : ['No users registered']
+                    .card.user.mb-4
+                        .card-body
+                            .card-title
+                                .user-header
+                                    h3.mb-3 #{user.name} #{user.lastName}
+                                    .actions
+                                        button.btn.btn-primary.mr-2(type='button', data-toggle='modal', data-target='#updateModal',
+                                            data-nick=`${user.nick}`,
+                                            data-name=`${user.name}`,
+                                            data-lastName=`${user.lastName}`,
+                                            data-role=`${user.role}`,
+                                            data-email=`${user.email}`
+                                            onclick='onUpdateModalOpen(this)')
+                                            span.iconify(data-icon='bx:bxs-edit', data-inline='false')
+                                        button.btn.btn-danger.mr-2(type='button' onclick=`onDeleteUser(this)`)&attributes({'data-id': user._id})
+                                            span.iconify(data-icon='ic:round-delete', data-inline='false')
+                            p.mb-1 Nick: #{user.nick}
+                            p.mb-1 Role: #{user.role}
+                            p.mb-1 Email: #{user.email}
+        #updateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+            .modal-dialog.modal-dialog-centered(role='document')
+                .modal-content
+                    .modal-header
+                        h5.modal-title Edit user
+                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') &times;
+                    .modal-body
+                        .form-group
+                            label(for='nickUpdateInput') Nick *
+                            input#nickUpdateInput.form-control(name='nick', type='text', aria-describedby='nickHelp', placeholder='Enter nick')
+                            small#nickUpdateHelp.form-text.text-muted
+                                ul
+                                    li Start with a letter or underscore
+                        .form-group
+                            label(for='nameUpdateInput') Name *
+                            input#nameUpdateInput.form-control(name='name', type='text', placeholder='Enter name')
+                        .form-group
+                            label(for='lastNameUpdateNameInput') Last name
+                            input#lastNameUpdateNameInput.form-control(name='lastName', type='text', placeholder='Enter last name')
+                        .form-group
+                            label(for='roleUpdateSelect') Role *
+                            select#roleUpdateSelect.form-control(name='role')
+                                option Admin
+                                option Operador
+                                option Administrativo
+                        .form-group
+                            label(for='emailInput') Email address *
+                            input#emailUpdateInput.form-control(name='email', type='email', aria-describedby='emailHelp', placeholder='Enter email')
+                        .form-group
+                            label(for='passwordInput') Password *
+                            input#passwordUpdateInput.form-control(name='password', type='password', placeholder='Password')
+                        button.btn.btn-primary(type='submit' onclick='onUpdateUser(this)') Submit
+                    .modal-footer
+                        button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                        button.btn.btn-primary(type='button') Save changes
+        script(src='https://code.jquery.com/jquery-3.4.1.slim.min.js', integrity='sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n', crossorigin='anonymous')
+        script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js', integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo', crossorigin='anonymous')
+        script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js', integrity='sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6', crossorigin='anonymous')
+        script(src='scripts.js')
+

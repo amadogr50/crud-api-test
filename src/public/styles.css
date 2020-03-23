@@ -1,0 +1,20 @@
+main {
+    display: grid;
+    padding: 24px;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-areas: "form form form form content content content content content content content content";
+    grid-gap: 24px;
+}
+
+.form {
+    grid-area: form;
+}
+
+.content {
+    grid-area: content;
+}
+
+.user-header {
+    display: flex;
+    justify-content: space-between;
+}
