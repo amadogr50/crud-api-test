@@ -9,7 +9,7 @@ html
     body
         main
             div.form
-                .card
+                .card.mb-3
                     .card-body
                         h5.card-title Create new user
                         form(action='/api/users', method='POST')
@@ -38,6 +38,10 @@ html
                                 label(for='passwordInput') Password *
                                 input#passwordInput.form-control(name='password', type='password', placeholder='Password', required)
                             button.btn.btn-primary(type='submit') Submit
+                a(href='https://github.com/amadogr50/crud-api-test')
+                    button.btn.btn-primary
+                        span.iconify.mr-2(data-icon='ant-design:github-filled', data-inline='false')
+                        | See repository
             div.content
                 each user in users.length ? users : ['No users registered']
                     .card.user.mb-4
