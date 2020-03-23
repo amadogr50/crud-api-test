@@ -1,4 +1,7 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
+
+const ROLES = ['Admin', 'Operador', 'Administrativo']
 
 const Schema = mongoose.Schema
 
@@ -25,7 +28,7 @@ const userSchema = new Schema({
   role: {
     type: String,
     required: true,
-    enum: ['Admin', 'Operador', 'Administrativo']
+    enum: ROLES
   },
   email: {
     type: String,
@@ -38,4 +41,17 @@ const userSchema = new Schema({
   }
 })
 
+const generateHash = (password) => {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+}
+userSchema.methods.generateHash = generateHash
+
+const validPassword = (password) => {
+  return bcrypt.compareSync(password, this.password);
+};
+userSchema.methods.validPassword = validPassword
+
 module.exports = mongoose.model('users', userSchema)
+module.exports.ROLES = ROLES
+module.exports.generateHash = generateHash
+module.exports.validPassword = validPassword

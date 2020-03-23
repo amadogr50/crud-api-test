@@ -43,27 +43,34 @@ html
                         span.iconify.mr-2(data-icon='ant-design:github-filled', data-inline='false')
                         | See repository
             div.content
-                each user in users.length ? users : ['No users registered']
+                if users.length > 0
+                    each user in users
+                        .card.user.mb-4
+                            .card-body
+                                .card-title
+                                    .user-header
+                                        h3.mb-3 #{user.name} #{user.lastName}
+                                        .actions
+                                            button.btn.btn-primary.mr-2(type='button', data-toggle='modal', data-target='#updateModal',
+                                                data-nick=`${user.nick}`,
+                                                data-name=`${user.name}`,
+                                                data-lastName=`${user.lastName}`,
+                                                data-role=`${user.role}`,
+                                                data-email=`${user.email}`
+                                                onclick='onUpdateModalOpen(this)')
+                                                span.iconify(data-icon='bx:bxs-edit', data-inline='false')
+                                            button.btn.btn-danger.mr-2(type='button', data-toggle='modal', data-target='#deleteConfirmationModal', onclick=`onDeleteUser(this)`)&attributes({'data-id': user._id})
+                                                span.iconify(data-icon='ic:round-delete', data-inline='false')
+                                p.mb-1 Nick: #{user.nick}
+                                p.mb-1 Role: #{user.role}
+                                p.mb-1 Email: #{user.email}
+                else
                     .card.user.mb-4
                         .card-body
                             .card-title
                                 .user-header
-                                    h3.mb-3 #{user.name} #{user.lastName}
-                                    .actions
-                                        button.btn.btn-primary.mr-2(type='button', data-toggle='modal', data-target='#updateModal',
-                                            data-nick=`${user.nick}`,
-                                            data-name=`${user.name}`,
-                                            data-lastName=`${user.lastName}`,
-                                            data-role=`${user.role}`,
-                                            data-email=`${user.email}`
-                                            onclick='onUpdateModalOpen(this)')
-                                            span.iconify(data-icon='bx:bxs-edit', data-inline='false')
-                                        button.btn.btn-danger.mr-2(type='button' onclick=`onDeleteUser(this)`)&attributes({'data-id': user._id})
-                                            span.iconify(data-icon='ic:round-delete', data-inline='false')
-                            p.mb-1 Nick: #{user.nick}
-                            p.mb-1 Role: #{user.role}
-                            p.mb-1 Email: #{user.email}
-        #updateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                                    h3 No users registered
+        #updateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='updateModal', aria-hidden='true')
             .modal-dialog.modal-dialog-centered(role='document')
                 .modal-content
                     .modal-header
@@ -93,12 +100,26 @@ html
                             label(for='emailInput') Email address *
                             input#emailUpdateInput.form-control(name='email', type='email', aria-describedby='emailHelp', placeholder='Enter email')
                         .form-group
-                            label(for='passwordInput') Password *
+                            label(for='passwordInput') New Password
                             input#passwordUpdateInput.form-control(name='password', type='password', placeholder='Password')
+                        .form-group
+                            label(for='passwordConfirmationUpdateInput') Password confirmation
+                            input#passwordConfirmationUpdateInput.form-control(name='password', type='password', placeholder='Password')
                         button.btn.btn-primary(type='submit' onclick='onUpdateUser(this)') Submit
                     .modal-footer
                         button.btn.btn-secondary(type='button', data-dismiss='modal') Close
                         button.btn.btn-primary(type='button') Save changes
+        #deleteConfirmationModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteConfirmationModal', aria-hidden='true')
+            .modal-dialog.modal-dialog-centered(role='document')
+                .modal-content
+                    .modal-header
+                        h5.modal-title Are you sure you want to delete this user?
+                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') &times;
+                    .modal-footer
+                        button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel
+                            button#deleteConfirmationButton.btn.btn-danger(type='button', onclick=`onConfirmedDeleteUser(this)`) Delete
+
         script(src='https://code.jquery.com/jquery-3.4.1.slim.min.js', integrity='sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n', crossorigin='anonymous')
         script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js', integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo', crossorigin='anonymous')
         script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js', integrity='sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6', crossorigin='anonymous')
