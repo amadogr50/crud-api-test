@@ -68,7 +68,7 @@ router.post('/users', async (req, res) => {
     if (error) {
       res.status(500).send(error)
     } else {
-      res.status(200).send({id: user._id})
+      res.status(200).redirect('/').send({id: user._id})
     }
   })
 })
