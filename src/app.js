@@ -8,10 +8,9 @@ const bodyParser = require('body-parser')
 const index = require('./routes/index')
 const api = require('./routes/api')
 
-const MONGODB_URI = 'mongodb+srv://marito:UKhs7rxPfYLZup7J@toohak-lfq5e.mongodb.net/test?retryWrites=true&w=majority'
 
 /** Database connection **/
-mongoose.connect(MONGODB_URI, {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => {
